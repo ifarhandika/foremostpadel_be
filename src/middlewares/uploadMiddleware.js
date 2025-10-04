@@ -9,9 +9,9 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let folder = "others"
 
-    if (req.baseUrl.includes("courts")) folder = "courts"
-    if (req.baseUrl.includes("events")) folder = "events"
-    if (req.baseUrl.includes("investors")) folder = "investors"
+    if (req.path.includes("/courts")) folder = "courts"
+    if (req.path.includes("/events")) folder = "events"
+    if (req.path.includes("/investors")) folder = "investors"
 
     const fullPath = path.join(BASE_UPLOAD_PATH, folder)
 
