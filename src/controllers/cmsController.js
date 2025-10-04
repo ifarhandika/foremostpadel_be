@@ -90,7 +90,12 @@ exports.deleteUser = async (req, res, next) => {
 // Courts
 exports.createCourt = async (req, res, next) => {
   try {
-    const court = await cmsService.createCourt(req.body)
+    let data = req.body
+    if (req.file) {
+      // Generate public URL (adjust domain as needed)
+      data.court_image = `${process.env.BASE_URL}/public/courts/${req.file.filename}`
+    }
+    const court = await cmsService.createCourt(data)
     res.json({ success: true, message: "Court created", data: court })
   } catch (err) {
     next(err)
@@ -107,7 +112,11 @@ exports.getCourts = async (req, res, next) => {
 }
 exports.updateCourt = async (req, res, next) => {
   try {
-    const court = await cmsService.updateCourt(req.params.id, req.body)
+    let data = req.body
+    if (req.file) {
+      data.court_image = `${process.env.BASE_URL}/public/courts/${req.file.filename}`
+    }
+    const court = await cmsService.updateCourt(req.params.id, data)
     res.json({ success: true, message: "Court updated", data: court })
   } catch (err) {
     next(err)
@@ -125,7 +134,11 @@ exports.deleteCourt = async (req, res, next) => {
 // Events
 exports.createEvent = async (req, res, next) => {
   try {
-    const event = await cmsService.createEvent(req.body)
+    let data = req.body
+    if (req.file) {
+      data.tournament_image = `${process.env.BASE_URL}/public/events/${req.file.filename}`
+    }
+    const event = await cmsService.createEvent(data)
     res.json({ success: true, message: "Event created", data: event })
   } catch (err) {
     next(err)
@@ -142,7 +155,11 @@ exports.getEvents = async (req, res, next) => {
 }
 exports.updateEvent = async (req, res, next) => {
   try {
-    const event = await cmsService.updateEvent(req.params.id, req.body)
+    let data = req.body
+    if (req.file) {
+      data.tournament_image = `${process.env.BASE_URL}/public/events/${req.file.filename}`
+    }
+    const event = await cmsService.updateEvent(req.params.id, data)
     res.json({ success: true, message: "Event updated", data: event })
   } catch (err) {
     next(err)
@@ -160,7 +177,11 @@ exports.deleteEvent = async (req, res, next) => {
 // Investors
 exports.createInvestor = async (req, res, next) => {
   try {
-    const investor = await cmsService.createInvestor(req.body)
+    let data = req.body
+    if (req.file) {
+      data.investor_image = `${process.env.BASE_URL}/public/investors/${req.file.filename}`
+    }
+    const investor = await cmsService.createInvestor(data)
     res.json({ success: true, message: "Investor created", data: investor })
   } catch (err) {
     next(err)
@@ -177,7 +198,11 @@ exports.getInvestors = async (req, res, next) => {
 }
 exports.updateInvestor = async (req, res, next) => {
   try {
-    const investor = await cmsService.updateInvestor(req.params.id, req.body)
+    let data = req.body
+    if (req.file) {
+      data.investor_image = `${process.env.BASE_URL}/public/investors/${req.file.filename}`
+    }
+    const investor = await cmsService.updateInvestor(req.params.id, data)
     res.json({ success: true, message: "Investor updated", data: investor })
   } catch (err) {
     next(err)
