@@ -35,7 +35,7 @@ app.use("/v1/cms", cmsRouter)
 
 // Health check
 app.get("/", (req, res) => {
-  res.send("Hello, Express!")
+  res.send("Hello, Foremost!")
 })
 
 // Error handler

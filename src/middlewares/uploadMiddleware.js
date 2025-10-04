@@ -2,17 +2,24 @@ const multer = require("multer")
 const path = require("path")
 const fs = require("fs")
 
+// Base folder where files should be stored (cPanel public_html)
+const BASE_UPLOAD_PATH = process.env.BASE_UPLOAD_PATH
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    let folder = "public/others"
-    if (req.baseUrl.includes("courts")) folder = "public/courts"
-    if (req.baseUrl.includes("events")) folder = "public/events"
-    if (req.baseUrl.includes("investors")) folder = "public/investors"
-    const fullPath = path.join(__dirname, "../../", folder)
+    let folder = "others"
+
+    if (req.baseUrl.includes("courts")) folder = "courts"
+    if (req.baseUrl.includes("events")) folder = "events"
+    if (req.baseUrl.includes("investors")) folder = "investors"
+
+    const fullPath = path.join(BASE_UPLOAD_PATH, folder)
+
     // Create folder if it doesn't exist
     if (!fs.existsSync(fullPath)) {
       fs.mkdirSync(fullPath, { recursive: true })
     }
+
     cb(null, fullPath)
   },
   filename: (req, file, cb) => {
