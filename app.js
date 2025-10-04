@@ -3,6 +3,7 @@ const express = require("express")
 const helmet = require("helmet")
 const cors = require("cors")
 const rateLimit = require("express-rate-limit")
+const cookieParser = require("cookie-parser")
 const app = express()
 const port = process.env.PORT || 3000
 const authenticateDB = require("./src/services/dbService")
@@ -13,8 +14,15 @@ const cmsRouter = require("./src/routes/cmsRoutes")
 
 const seedSuperadmin = require("./src/utils/seedingData")
 
+app.use(cookieParser())
 app.use(helmet())
-app.use(cors({ origin: "*" })) // Allow all origins for public APIs
+app.use(
+  cors({
+    origin: "https://cms.foremostpadel.com", // your CMS frontend domain
+    credentials: true, // allow cookies
+  })
+)
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 

@@ -1,15 +1,22 @@
 const jwt = require("jsonwebtoken")
 
 module.exports = (req, res, next) => {
-  const authHeader = req.headers.authorization
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ success: false, message: "No token provided" })
+  // JWT now stored in cookies
+  const token = req.cookies?.token // assuming your cookie name is "token"
+
+  if (!token) {
+    return res
+      .status(401)
+      .json({ success: false, message: "No token provided" })
   }
-  const token = authHeader.split(" ")[1]
+
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET)
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    req.user = decoded
     next()
   } catch (err) {
-    return res.status(401).json({ success: false, message: "Invalid token" })
+    return res
+      .status(401)
+      .json({ success: false, message: "Invalid or expired token" })
   }
 }

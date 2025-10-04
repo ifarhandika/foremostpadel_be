@@ -7,25 +7,40 @@ const { isSuperadmin } = require("../utils/authUtils")
 exports.login = async (req, res, next) => {
   try {
     const { user_name, password } = req.body
+
     const user = await cmsService.findUserByUsername(user_name)
-    if (!user)
+    if (!user) {
       return res
         .status(401)
         .json({ success: false, message: "Invalid credentials" })
+    }
+
     const match = await bcrypt.compare(password, user.password)
-    if (!match)
+    if (!match) {
       return res
         .status(401)
         .json({ success: false, message: "Invalid credentials" })
+    }
+
+    // Generate JWT
     const token = jwt.sign(
       { id: user.id, user_name: user.user_name },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     )
-    res.json({
+
+    // ✅ Set JWT as httpOnly cookie (cannot be accessed by JS)
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true, // ✅ must be true for HTTPS (set to false if testing on localhost)
+      sameSite: "None", // ✅ required for cross-domain (frontend <> backend)
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    })
+
+    // ✅ Return success JSON (no token in body anymore)
+    return res.json({
       success: true,
       message: "Login successful",
-      bearer_token: token,
     })
   } catch (err) {
     next(err)
@@ -72,12 +87,10 @@ exports.updateUser = async (req, res, next) => {
 }
 exports.deleteUser = async (req, res, next) => {
   if (!isSuperadmin(req.user)) {
-    return res
-      .status(403)
-      .json({
-        success: false,
-        message: "Forbidden: Only admin can delete users",
-      })
+    return res.status(403).json({
+      success: false,
+      message: "Forbidden: Only admin can delete users",
+    })
   }
   try {
     await cmsService.softDeleteUser(req.params.id)
