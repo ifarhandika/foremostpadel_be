@@ -170,7 +170,7 @@ exports.updateEvent = async (req, res, next) => {
   try {
     let data = req.body
     if (req.file) {
-      data.tournament_image = `${process.env.BASE_URL}/public/events/${req.file.filename}`
+      data.event_image = `${process.env.BASE_URL}/public/events/${req.file.filename}`
     }
     const event = await cmsService.updateEvent(req.params.id, data)
     res.json({ success: true, message: "Event updated", data: event })
