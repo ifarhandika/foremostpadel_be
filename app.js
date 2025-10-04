@@ -18,8 +18,8 @@ app.use(cookieParser())
 app.use(helmet())
 app.use(
   cors({
-    origin: "https://cms.foremostpadel.com", // your CMS frontend domain
-    credentials: true, // allow cookies
+    origin: "https://cms.foremostpadel.com", 
+    credentials: true, 
   })
 )
 

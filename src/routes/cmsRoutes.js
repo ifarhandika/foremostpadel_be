@@ -22,7 +22,7 @@ router.delete("/courts/:id", jwtAuth, cmsController.deleteCourt)
 // Events
 router.post("/events", jwtAuth, upload.single("event_image"), cmsController.createEvent)
 router.get("/events", jwtAuth, cmsController.getEvents)
-router.put("/events/:id", upload.single("event_image"), jwtAuth, cmsController.updateEvent)
+router.put("/events/:id", jwtAuth, upload.single("event_image"),  cmsController.updateEvent)
 router.delete("/events/:id", jwtAuth, cmsController.deleteEvent)
 
 // Investors
