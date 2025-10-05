@@ -6,6 +6,8 @@ const cmsController = require("../controllers/cmsController")
 
 // Auth
 router.post("/login", cmsController.login)
+router.post("/logout", cmsController.logout)
+router.get("/check-auth", cmsController.checkAuth)
 
 // Users
 router.post("/users", jwtAuth, cmsController.createUser)

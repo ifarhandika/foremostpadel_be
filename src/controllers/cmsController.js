@@ -47,6 +47,37 @@ exports.login = async (req, res, next) => {
   }
 }
 
+exports.checkAuth = (req, res) => {
+  try {
+    const token = req.cookies.token
+    if (!token) {
+      return res.json({ success: false, message: "No token found" })
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
+    return res.json({
+      success: true,
+      user: {
+        id: decoded.id,
+        user_name: decoded.user_name,
+      },
+    })
+  } catch (err) {
+    return res.json({ success: false, message: "Invalid or expired token" })
+  }
+}
+
+exports.logout = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  })
+  res.json({ success: true, message: "Logged out successfully" })
+}
+
+
 // Users
 exports.createUser = async (req, res, next) => {
   if (!isSuperadmin(req.user)) {
