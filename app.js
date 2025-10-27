@@ -11,6 +11,7 @@ const errorMiddleware = require("./src/middlewares/errorMiddleware")
 
 const publicRouter = require("./src/routes/publicRoutes")
 const cmsRouter = require("./src/routes/cmsRoutes")
+const emailRouter = require("./src/routes/emailRoutes")
 
 const seedSuperadmin = require("./src/utils/seedingData")
 
@@ -40,6 +41,9 @@ app.use("/v1/public", publicRouter)
 
 // CMS routes (with JWT auth)
 app.use("/v1/cms", cmsRouter)
+
+// Email routes
+app.use("/v1/email", emailRouter)
 
 // Health check
 app.get("/", (req, res) => {
