@@ -38,3 +38,16 @@ exports.getAllInvestors = async (req, res, next) => {
     next(err)
   }
 }
+
+exports.getCompanyData = async (req, res, next) => {
+  try {
+    const companyData = await publicService.getCompanyData()
+    res.json({
+      success: true,
+      message: "Company Data fetched successfully",
+      data: companyData
+    })
+  } catch (err) {
+    next(err)
+  }
+}

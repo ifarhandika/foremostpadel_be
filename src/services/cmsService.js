@@ -3,6 +3,7 @@ const User = require("../models/userModel")
 const Court = require("../models/courtModel")
 const Event = require("../models/eventModel")
 const Investor = require("../models/investorModel")
+const Employee = require("../models/employeeModel")
 
 // Auth
 exports.findUserByUsername = async (user_name) => {
@@ -19,7 +20,7 @@ exports.getUsers = async ({ page, limit }) => {
   return await User.findAndCountAll({
     where: { row_status: 1 },
     offset: (page - 1) * limit,
-    limit: parseInt(limit)
+    limit: parseInt(limit),
   })
 }
 exports.updateUser = async (id, data) => {
@@ -40,7 +41,7 @@ exports.getCourts = async ({ page, limit }) => {
   return await Court.findAndCountAll({
     where: { row_status: 1 },
     offset: (page - 1) * limit,
-    limit: parseInt(limit)
+    limit: parseInt(limit),
   })
 }
 exports.updateCourt = async (id, data) => {
@@ -60,7 +61,7 @@ exports.getEvents = async ({ page, limit }) => {
   return await Event.findAndCountAll({
     where: { row_status: 1 },
     offset: (page - 1) * limit,
-    limit: parseInt(limit)
+    limit: parseInt(limit),
   })
 }
 exports.updateEvent = async (id, data) => {
@@ -80,7 +81,7 @@ exports.getInvestors = async ({ page, limit }) => {
   return await Investor.findAndCountAll({
     where: { row_status: 1 },
     offset: (page - 1) * limit,
-    limit: parseInt(limit)
+    limit: parseInt(limit),
   })
 }
 exports.updateInvestor = async (id, data) => {
@@ -90,3 +91,23 @@ exports.updateInvestor = async (id, data) => {
 exports.softDeleteInvestor = async (id) => {
   await Investor.update({ row_status: 0 }, { where: { id } })
 }
+
+//Employees
+exports.createEmployee = async (data) => {
+  data.row_status = 1
+  return await Employee.create(data)
+}
+exports.getEmployees = async ({ page, limit }) => {
+  return await Employee.findAndCountAll({
+    where: { row_status: 1 },
+    offset: (page - 1) * limit,
+    limit: parseInt(limit),
+  })
+}
+exports.updateEmployee = async (id, data) => {
+  await Employee.update(data, { where: { id } })
+  return await Employee.findByPk(id)
+}
+exports.softDeleteEmployee = async (id) => {
+  await Employee.update({ row_status: 0 }, { where: { id } })
+} 

@@ -33,4 +33,10 @@ router.get("/investors", jwtAuth, cmsController.getInvestors)
 router.put("/investors/:id", jwtAuth, upload.single("investor_image"), cmsController.updateInvestor)
 router.delete("/investors/:id", jwtAuth, cmsController.deleteInvestor)
 
+// Employees
+router.post("/employees", jwtAuth, upload.single("employee_image"), cmsController.createEmployee)
+router.get("/employees", jwtAuth, cmsController.getEmployees)
+router.put("/employees/:id", jwtAuth, upload.single("employee_image"), cmsController.updateEmployee)
+router.delete("/employees/:id", jwtAuth, cmsController.deleteEmployee)
+
 module.exports = router

@@ -12,6 +12,7 @@ const storage = multer.diskStorage({
     if (req.path.includes("/courts")) folder = "courts"
     if (req.path.includes("/events")) folder = "events"
     if (req.path.includes("/investors")) folder = "investors"
+    if (req.path.includes("/employees")) folder = "employees"
 
     const fullPath = path.join(BASE_UPLOAD_PATH, folder)
 

@@ -260,3 +260,46 @@ exports.deleteInvestor = async (req, res, next) => {
     next(err)
   }
 }
+
+//Employees
+exports.createEmployee = async (req, res, next) => {
+  try {
+    let data = req.body
+    if (req.file) {
+      data.employee_image = `${process.env.BASE_URL}/public/employees/${req.file.filename}`
+    }
+    const employee = await cmsService.createEmployee(data)
+    res.json({ success: true, message: "Employee created", data: employee })
+  } catch (err) {
+    next(err)
+  }
+}
+exports.getEmployees = async (req, res, next) => {
+  try {
+    const { page = 1, limit = 10 } = req.query
+    const employees = await cmsService.getEmployees({ page, limit })
+    res.json({ success: true, message: "Employees fetched", data: employees })
+  } catch (err) {
+    next(err)
+  }
+}
+exports.updateEmployee = async (req, res, next) => {
+  try {
+    let data = req.body
+    if (req.file) {
+      data.employee_image = `${process.env.BASE_URL}/public/employees/${req.file.filename}`
+    }
+    const employee = await cmsService.updateEmployee(req.params.id, data)
+    res.json({ success: true, message: "Employee updated", data: employee })
+  } catch (err) {
+    next(err)
+  }
+}
+exports.deleteEmployee = async (req, res, next) => {
+  try {
+    await cmsService.softDeleteEmployee(req.params.id)
+    res.json({ success: true, message: "Employee deleted" })
+  } catch (err) {
+    next(err)
+  }
+}
